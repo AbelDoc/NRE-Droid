@@ -7,23 +7,33 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import butterknife.ButterKnife;
 
 public abstract class Frame extends Fragment {
 
+    private Bundle internalBundle;
+
+    public Frame() {
+        internalBundle = new Bundle();
+        internalBundle.putBoolean("firstInflate", true);
+    }
+
     /**
      * Called on frame creation (or re-creation)
-     * @param inflater      the view inflater
-     * @param container     the parent container
-     * @param savedInstance the saved instance bundle
+     * @param inflater   the view inflater
+     * @param container  the parent container
+     * @param nullBundle instance bundle, always null
      * @return the inflated view
      */
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle nullBundle) {
         View view = inflater.inflate(getFrameLayout(), container, false);
 
-        ButterKnife.bind(this, view);
-        onCreateFrame(savedInstance);
+        boolean firstInflate = internalBundle.getBoolean("firstInflate", true);
+        if (firstInflate) {
+            internalBundle.putBoolean("firstInflate", false);
+        }
+
+        onCreateFrame(view, firstInflate, internalBundle);
         return view;
     }
 
@@ -34,8 +44,10 @@ public abstract class Frame extends Fragment {
 
     /**
      * Called on frame creation (or re-creation)
+     * @param inflated      the inflated view
+     * @param firstInflate  if this is the first layout inflate
      * @param savedInstance the saved instance bundle
      */
-    protected abstract void onCreateFrame(Bundle savedInstance);
+    protected abstract void onCreateFrame(View inflated, boolean firstInflate, Bundle savedInstance);
 
 }

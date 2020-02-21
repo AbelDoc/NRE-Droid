@@ -49,7 +49,7 @@ public class FrameManager {
         }
     }
 
-    private void popFrame() {
+    public void popFrame() {
         if (framesId.size() > 1) {
             framesId.pop();
         }

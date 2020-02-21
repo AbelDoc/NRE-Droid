@@ -9,13 +9,14 @@ import com.nre.nredroid.frame.BasicFrame;
 public class NRE_Main extends NREActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getToolBar().setTitle("NRE Droid Test");
-        try {
-            getManager().showFrame(BasicFrame.class);
-        } catch (FrameConstructionException e) {
-            e.printStackTrace();
+    protected void NREonCreate(boolean firstInflate, Bundle savedInstanceState) {
+        if (firstInflate) {
+            getToolBar().setTitle("NRE Droid Test");
+            try {
+                getManager().showFrame(BasicFrame.class);
+            } catch (FrameConstructionException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
